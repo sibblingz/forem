@@ -18,7 +18,7 @@ module Forem
     end
 
     def as_sanitized_text(text)
-      sanitize(text, :tags=>%W(p), :attributes=>[])
+      sanitize(text, :tags=>%W(p table th tr td blockquote), :attributes=>[])
     end
   end
 end
