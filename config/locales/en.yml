@@ -80,12 +80,12 @@ en:
         title: Forums
         forum: Forum
         views: Views
-        last_post: 'Last Post:'
+        last_post: 'Latest Post:'
         none: None
     topic:
       headings:
         topic: Topic
-        latest: Latest
+        latest: Latest Post
         posts: Posts
         views: Views
       moderation:
@@ -178,9 +178,9 @@ en:
         pinned: Pinned
         hidden: Hidden
         posts:
-          text: Text
+          text: 
       post:
-        text: Text
+        text: 
   refinery:
     plugins:
       refinery_forem:
