@@ -31,5 +31,10 @@ module Forem
         auto_discovery_link_tag(:atom)
       end
     end
+    
+    def forem_admin_or_moderator?(forum)
+      forem_user && (forem_user.forem_admin? || forum.moderator?(forem_user))
+    end
+    
   end
 end
