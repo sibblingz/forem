@@ -14,7 +14,7 @@ module Forem
     # Used in the moderation tools partial
     attr_accessor :moderation_option
 
-    belongs_to :topic
+    belongs_to :topic, :counter_cache => true
     belongs_to :user, :class_name => Forem.user_class.to_s
     belongs_to :reply_to, :class_name => "Post"
 
