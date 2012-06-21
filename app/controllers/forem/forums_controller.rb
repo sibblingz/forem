@@ -14,8 +14,14 @@ module Forem
       else
         @forum.topics.visible.approved_or_pending_review_for(forem_user)
       end
-
-      @topics = @topics.by_pinned_or_most_recent_post.page(params[:page]).per(20)
+      
+      # working topic sort
+      
+      if params[:sort]
+        @topics = @topics.order(params[:sort] + ' ' + params[:direction]).page(params[:page]).per(20)
+      else
+        @topics = @topics.by_pinned_or_most_recent_post.page(params[:page]).per(20)
+      end
 
       respond_to do |format|
         format.html
