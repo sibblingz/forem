@@ -5,7 +5,9 @@ module Forem
     validates_presence_of :subscriber_id
 
     def send_notification(post_id)
-      SubscriptionMailer.topic_reply(post_id, self.subscriber.id).deliver
+      if CONFIGURATION['stage'] != 'local'
+        SubscriptionMailer.topic_reply(post_id, self.subscriber.id).deliver
+      end
     end
   end
 end
