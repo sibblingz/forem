@@ -34,6 +34,24 @@ module Forem
         render :action => "new"
       end
     end
+    
+    def update
+      if forem_user.forem_admin?
+        @topic = Topic.find(params[:id])
+        @topic.forum_id = params[:topic][:forum_id]
+        
+        if @topic.save!
+          flash[:notice] = "Forum topic moved successfully"
+          redirect_to [@topic.forum, @topic]
+        else
+          flash.now.alert = t("forem.topic.not_created")
+          render :action => "new"
+        end
+      else
+        flash[:notice] = "Unauthorized to move topic"
+        redirect_to :back
+      end
+    end
 
     def destroy
       @topic = @forum.topics.find(params[:id])
@@ -64,6 +82,7 @@ module Forem
     end
 
     private
+    
     def find_forum
       @forum = Forem::Forum.find(params[:forum_id])
       authorize! :read, @forum
