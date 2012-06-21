@@ -5,7 +5,7 @@
 //
 $(document).ready(function() {
   group_id = $('#add_member').data('group-id');
-  $('#new_member').autocomplete({source: '/admin/users/autocomplete'})
+  $('#new_member').autocomplete({source: '/community/forum/admin/users/autocomplete'})
 
   $("#new_member").bind("autocompleteselect", function(event, ui) {
     $("#add_member").attr('disabled', false)
@@ -13,7 +13,7 @@ $(document).ready(function() {
 
   add_member = function() {
     user = $("#new_member").val()
-    $.post(Forem.base_path + 'admin/groups/' + group_id + '/members', { user: user })
+    $.post('/community/forum/admin/groups/' + group_id + '/members', { user: user })
     $(this).attr('disabled', true)
     $("#new_member").val("")
     $('#members').append('<li>' + user + '</li>')
