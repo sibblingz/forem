@@ -13,7 +13,7 @@ module Forem
 
     # Used in the moderation tools partial
     attr_accessor :moderation_option
-
+    
     belongs_to :topic, :counter_cache => true
     belongs_to :user, :class_name => Forem.user_class.to_s
     belongs_to :reply_to, :class_name => "Post"
@@ -21,7 +21,17 @@ module Forem
     has_many :replies, :class_name => "Post",
                        :foreign_key => "reply_to_id",
                        :dependent => :nullify
-
+                       
+    has_attached_file :file_one,   {}.merge(PAPERCLIP_STORAGE_OPTIONS)
+    has_attached_file :file_two,   {}.merge(PAPERCLIP_STORAGE_OPTIONS)
+    has_attached_file :file_three, {}.merge(PAPERCLIP_STORAGE_OPTIONS)
+    
+    # {:url => "/forum_files/three/:id/:updated_at/:filename.:extension"} #good mirror of the s3 storage for local testing
+    
+    validates_attachment_size :file_one, :less_than => 1.megabytes
+    validates_attachment_size :file_two, :less_than => 1.megabytes
+    validates_attachment_size :file_three, :less_than => 1.megabytes
+    
     delegate :forum, :to => :topic
 
     validates :text, :presence => true

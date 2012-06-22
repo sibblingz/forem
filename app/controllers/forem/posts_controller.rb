@@ -65,7 +65,31 @@ module Forem
       end
 
     end
+    
+    def remove_attachment
+      @post = Post.find(params[:id])
+      
+      if @post.owner_or_admin?(forem_user)
+        if params[:file_name] == "file_one"
+          @post.file_one = nil
+        elsif params[:file_name] == "file_two"
+          @post.file_two = nil
+        elsif params[:file_name] == "file_three"
+          @post.file_three = nil
+        end
+        
+        if @post.save!
+          redirect_to [@topic.forum, @topic], :notice => "File Removed Successfully"
+        else
+          redirect_to [@topic.forum, @topic], :notice => "There was a problem removing the file"
+        end
+        
+      else 
+        redirect_to [@topic.forum, @topic], :notice => "You are not allowed to remove this file"
+      end
 
+    end
+    
     private
 
     def find_topic

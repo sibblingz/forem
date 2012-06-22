@@ -19,7 +19,7 @@ Forem::Engine.routes.draw do
   put 'forums/:forum_id/moderate/posts', :to => "moderation#posts", :as => :forum_moderate_posts
   # Moderation of a single topic
   put 'forums/:forum_id/topics/:topic_id/moderate', :to => "moderation#topic", :as => :moderate_forum_topic
-
+  
   resources :categories
 
   namespace :admin do
