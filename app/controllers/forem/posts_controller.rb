@@ -93,26 +93,24 @@ module Forem
     def send_attachment
       @post = Post.find(params[:id])
       
-      data = ""
-      filename = ""
+      path = ""
       
       if params[:file_name] == "file_one"
-        filename = @post.file_one_file_name
-        data = @post.file_one.s3_object.read
+        path = @post.file_one.path
+        # data = @post.file_one.s3_object.read
       elsif params[:file_name] == "file_two"
-        filename = @post.file_two_file_name
-        data = @post.file_two.s3_object.read
+        path = @post.file_one.path
+        # data = @post.file_two.s3_object.read
       elsif params[:file_name] == "file_three"
-        filename = @post.file_two_file_name
-        data = @post.file_one.s3_object.read
+        path = @post.file_one.path
+        # data = @post.file_one.s3_object.read
       end
       
-      if filename != ""
-        send_data data, :filename => filename
-      else
-        redirect_to [@topic.forum, @topic], :notice => "There was a problem retrieving the file you requested"
-      end
+      time_of_exipry = Time.now + 15.minutes
+      url = AWS::S3::S3Object.url_for(path, 'Spaceport_Forum', :expires => time_of_exipry.to_i)
       
+      redirect_to url
+          
     end
     
     private
