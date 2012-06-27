@@ -18,7 +18,7 @@ module Forem
       # working topic sort
       
       if params[:sort]
-        @topics = @topics.order(params[:sort] + ' ' + params[:direction]).page(params[:page]).per(20)
+        @topics = @topics.order(params[:sort] + ' ' + params[:direction].upcase).page(params[:page]).per(20)
       else
         @topics = @topics.by_pinned_or_most_recent_post.page(params[:page]).per(20)
       end
