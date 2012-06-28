@@ -99,10 +99,10 @@ module Forem
         path = @post.file_one.path
         # data = @post.file_one.s3_object.read
       elsif params[:file_name] == "file_two"
-        path = @post.file_one.path
+        path = @post.file_two.path
         # data = @post.file_two.s3_object.read
       elsif params[:file_name] == "file_three"
-        path = @post.file_one.path
+        path = @post.file_three.path
         # data = @post.file_one.s3_object.read
       end
       
