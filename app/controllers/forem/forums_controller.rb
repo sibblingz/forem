@@ -1,6 +1,6 @@
 module Forem
   class ForumsController < Forem::ApplicationController
-    load_and_authorize_resource :only => :show
+    # load_and_authorize_resource :only => :show
     helper 'forem/topics'
 
     def index
@@ -9,6 +9,7 @@ module Forem
 
     def show
       @forum = Forem::Forum.find(params[:id])
+      authorize! :read, @forum
       @topics = if forem_admin_or_moderator?(@forum)
         @forum.topics
       else
