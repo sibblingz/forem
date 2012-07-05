@@ -15,7 +15,7 @@ module Forem
       if match
         SubscriptionMailer.topic_reply(post_id, self.subscriber.id).deliver
       else
-        logger.warn "this user (#{@user.email}) is not allowed to use this site (authenticate_email_filter=#{CONFIGURATION['authenticate_email_filter']}), so don't deliver mail"
+        logger.warn "this user (#{self.subscriber.email}) is not allowed to use this site (authenticate_email_filter=#{filter}), so don't deliver mail"
       end
     end
   end
