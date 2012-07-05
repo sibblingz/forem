@@ -7,15 +7,7 @@ module Forem
       @post = Post.find(post_id)
       @user = Forem.user_class.find(subscriber_id)
       
-      filter = CONFIGURATION['authenticate_email_filter']
-      regexp = Regexp.new filter
-      match = regexp.match @user.email
-      
-      if match
-        mail(:to => @user.email, :subject => "A topic you are subscribed to has received a reply")
-      else
-        logger.error "this user (#{@user.email}) is not allowed to use this site (authenticate_email_filter=#{CONFIGURATION['authenticate_email_filter']}), so don't deliver mail"
-      end
+      mail(:to => @user.email, :subject => "A topic you are subscribed to has received a reply")
     end
   end
 end
