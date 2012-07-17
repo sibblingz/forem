@@ -8,6 +8,9 @@ module Forem
     has_many :moderator_groups
     has_many :moderators, :through => :moderator_groups, :source => :group
 
+    has_many :access_groups
+    has_many :participants, :through => :access_groups, :source => :group
+
     validates :category, :presence => true
     validates :title, :presence => true
     validates :description, :presence => true
