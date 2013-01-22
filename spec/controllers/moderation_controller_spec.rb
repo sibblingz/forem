@@ -8,14 +8,14 @@ describe Forem::ModerationController do
 
   it "anonymous users cannot access moderation" do
     get :index
-    flash[:alert].should == "You are not allowed to do that."
+    flash[:alert].should == "Access denied."
   end
 
   it "normal users cannot access moderation" do
     controller.stub_chain "forum.moderator?" => false
 
     get :index
-    flash[:alert].should == "You are not allowed to do that."
+    flash[:alert].should == "Access denied."
   end
 
   it "moderators can access moderation" do
