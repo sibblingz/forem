@@ -1,7 +1,7 @@
 module Forem
   class TopicsController < Forem::ApplicationController
     helper 'forem/posts'
-    before_filter :authenticate_forem_user
+    before_filter :authenticate_forem_user, :except => [:show]
     before_filter :find_forum
     before_filter :block_spammers, :only => [:new, :create]
 
@@ -85,6 +85,15 @@ module Forem
     
     def find_forum
       @forum = Forem::Forum.find(params[:forum_id])
+      if cannot? :read, @forum
+        if !forem_user || !forem_user.signed_in?
+          session["user_return_to"] = request.fullpath
+          flash.alert = t("forem.errors.not_signed_in")
+          redirect_to main_app.sign_in_path
+          return
+        end
+
+      end
       authorize! :read, @forum
     end
 
