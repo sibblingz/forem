@@ -13,7 +13,7 @@ class Forem::ApplicationController < ApplicationController
   private
 
   def authenticate_forem_user
-    if !forem_user
+    if !forem_user || !forem_user.signed_in?
       session["user_return_to"] = request.fullpath
       flash.alert = t("forem.errors.not_signed_in")
       redirect_to main_app.sign_in_path
