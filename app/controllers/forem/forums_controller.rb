@@ -4,6 +4,12 @@ module Forem
     helper 'forem/topics'
 
     def index
+      forums = Forem::Forum.all
+      if forums.count == 1
+        redirect_to forums.first
+        return
+      end
+
       @categories = Forem::Category.order("forem_categories.position ASC")
     end
 
