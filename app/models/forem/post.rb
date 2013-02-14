@@ -28,9 +28,9 @@ module Forem
     
     # {:url => "/forum_files/three/:id/:updated_at/:filename.:extension"} #good mirror of the s3 storage for local testing
     
-    validates_attachment_size :file_one, :less_than => 1.megabytes
-    validates_attachment_size :file_two, :less_than => 1.megabytes
-    validates_attachment_size :file_three, :less_than => 1.megabytes
+    validates_attachment_size :file_one, :less_than => 1.megabytes, :message => "was too big. File attachments are limited to 1MB each."
+    validates_attachment_size :file_two, :less_than => 1.megabytes, :message => "was too big. File attachments are limited to 1MB each."
+    validates_attachment_size :file_three, :less_than => 1.megabytes, :message => "was too big. File attachments are limited to 1MB each."
     
     delegate :forum, :to => :topic
 
@@ -136,5 +136,15 @@ module Forem
       user.update_attribute(:forem_state, "spam") if user
     end
 
-  end
-end
+    public
+    def attached_files_too_large?
+      too_large = false
+      errors.full_messages.each do |msg|
+        too_large = true if msg.index('File attachments are limited to')
+      end
+      return too_large
+    end
+
+  end # class Post
+
+end # module Forem

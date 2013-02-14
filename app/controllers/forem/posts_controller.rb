@@ -26,7 +26,13 @@ module Forem
         redirect_to [@topic.forum, @topic]
       else
         params[:reply_to_id] = params[:post][:reply_to_id]
-        flash.now.alert = t("forem.post.not_created")
+
+        if @post.attached_files_too_large?
+          flash.now.alert = (t("forem.post.not_created") + "<br>Attached file(s) exceed the size limit").html_safe
+        else
+          flash.now.alert = t("forem.post.not_created")
+        end
+
         render :action => "new"
       end
     end
@@ -42,7 +48,12 @@ module Forem
       if @post.owner_or_admin?(forem_user) and @post.update_attributes(params[:post])
         redirect_to [@topic.forum, @topic], :notice => t('edited', :scope => 'forem.post')
       else
-        flash.now.alert = t("forem.post.not_edited")
+        if @post.attached_files_too_large?
+          flash.now.alert = (t("forem.post.not_created") + "<br>Attached file(s) exceed the size limit").html_safe
+        else
+          flash.now.alert = t("forem.post.not_created")
+        end
+
         render :action => "edit"
       end
     end
@@ -126,4 +137,5 @@ module Forem
       end
     end
   end
+
 end
