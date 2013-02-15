@@ -4,9 +4,20 @@ module Forem
     helper 'forem/topics'
 
     def index
+      # count how many are visible to the user, and remember the first visible one so we can redirect to it if there is only one
       forums = Forem::Forum.all
-      if forums.count == 1
-        redirect_to forums.first
+      num_visible_forums = 0
+      first_visible_forum = nil
+      forums.each do |forum|
+        if can? :read, forum
+          if num_visible_forums == 0
+            first_visible_forum = forum
+          end
+          num_visible_forums += 1
+        end
+      end
+      if num_visible_forums == 1
+        redirect_to first_visible_forum
         return
       end
 
