@@ -5,18 +5,7 @@ module Forem
     validates_presence_of :subscriber_id
 
     def send_notification(post_id)
-      # do not send any emails when using the 'local' stage
-      # return if CONFIGURATION['stage'] == 'local'
-
-      # only send emails when the user's email address matches the 'authenticate_email_filter' from the configuration.yml file
-      filter = CONFIGURATION['authenticate_email_filter']
-      regexp = Regexp.new filter
-      match = regexp.match self.subscriber.email
-      if match
-        SubscriptionMailer.topic_reply(post_id, self.subscriber.id).deliver
-      else
-        logger.warn "The user (#{self.subscriber.email}) is not allowed to use this site (authenticate_email_filter=#{filter}), so don't deliver mail"
-      end
+      SubscriptionMailer.topic_reply(post_id, self.subscriber.id).deliver
     end
   end
 end
