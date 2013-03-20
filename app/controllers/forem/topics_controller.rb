@@ -12,7 +12,14 @@ module Forem
         unless forem_admin_or_moderator?(@forum)
           @posts = @posts.approved_or_pending_review_for(forem_user)
         end
-        @posts = @posts.page(params[:page]).per(10)
+        posts_per_page = 10
+        first_page = 1
+        last_page = first_page + (@posts.count / posts_per_page).to_i
+        params[:page] = (params[:page] || last_page).to_i # if no page was specified, then show the LAST page
+        # range bounds
+        params[:page] = [params[:page], first_page].max
+        params[:page] = [params[:page], last_page].min
+        @posts = @posts.page(params[:page]).per(posts_per_page)
       end
     end
 
