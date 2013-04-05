@@ -14,7 +14,7 @@ module Forem
         end
         posts_per_page = 10
         first_page = 1
-        last_page = first_page + (@posts.count / posts_per_page).to_i
+        last_page = first_page + ((@posts.count-1) / posts_per_page).to_i
         params[:page] = (params[:page] || last_page).to_i # if no page was specified, then show the LAST page
         # range bounds
         params[:page] = [params[:page], first_page].max
