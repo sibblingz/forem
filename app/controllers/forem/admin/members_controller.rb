@@ -6,7 +6,15 @@ module Forem
       unless group.members.exists?(user.id)
         group.members << user
       end
-      render :status => :ok
+      render :status => :ok, :layout => false, :text => 'ok'
+    end
+
+    def destroy
+      user = Forem.user_class.where(:id => params[:id]).first
+      if group.members.exists?(user.id)
+        group.members.destroy(user)
+      end
+      redirect_to :back
     end
 
     private
